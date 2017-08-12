@@ -48,6 +48,8 @@ namespace ItemLevel
         public override void Initialize()
         {
             Commands.ChatCommands.Add(new Command(Test, "test"));
+            Commands.ChatCommands.Add(new Command(Querytest, "qtest"));
+            Commands.ChatCommands.Add(new Command(Itemlevel, "il"));
             if (!Config.ReadConfig())
             {
                 TShock.Log.ConsoleError("Config loading failed. Consider deleting it.");
@@ -167,6 +169,84 @@ namespace ItemLevel
                 }
             }
             return ts;
+        }
+        #endregion
+
+        #region Querytest
+        public void Querytest(CommandArgs args)
+        {
+            if (args.Parameters.Count < 1)
+            {
+                args.Player.SendInfoMessage("0 param");
+                return;
+            }
+            string Switch = args.Parameters[0].ToLower();
+            if (Switch == "cooldown")
+            {
+                int now = UnixTimestamp();
+                if (TShock.Config.StorageType.ToLower() == "sqlite")
+                {
+                    try
+                    {
+                        using (var reader = database.QueryReader("SELECT * FROM misc WHERE Expiration<@0 AND User=@1", now, args.Player.Name.ToLower()))
+                        {
+                            if (reader.Read())
+                            {
+                                reader.Get<string>("Expiration");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        TShock.Log.ConsoleError("SQL error" + ex);
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Test
+        //működik, beilleszt meg minden. asszem:D
+        private void Test(CommandArgs args)
+        {
+            TimeSpan time = ItemLevel.ParseTimeSpan(Config.contents.testcooldown);
+            int date = ItemLevel.UnixTimestamp();
+            int expiration = date + (int)time.TotalSeconds;
+            string username = args.Player.Name;
+            string commandid = Config.contents.testcommandid;
+            if (TShock.Config.StorageType.ToLower() == "sqlite")
+            {
+                database.Query("INSERT INTO misc(User, CommandID, Date, Expiration) VALUES(@0, @1, @2, @3);", username, commandid, date, expiration);
+            }
+            else
+            {
+                args.Player.SendErrorMessage("Minek mysql teszthez?");
+                return;
+            }
+        }
+        #endregion
+
+        #region Itemlevel    
+        //működik. beilleszt. kiolvasás el sincs kezdve
+        public void Itemlevel(CommandArgs args)
+        {
+            if (args.Parameters.Count < 1)
+            {
+                args.Player.SendInfoMessage("You can check the required levels for restricted items here.");
+                args.Player.SendInfoMessage("If the item name is two or more words, use doubleqoutes areound the name.");
+                args.Player.SendInfoMessage("Example: /itemlevel \"Solar Eruption\"");
+                return;
+            }
+            string Switch = args.Parameters[0].ToLower();
+            if (Switch == "add")
+            {
+                if (args.Parameters.Count == 3)
+                {
+                    string itemname = string.Join(" ", args.Parameters[1]);
+                    string restriction = string.Join(" ", args.Parameters[2]);
+                    additemlevel(itemname, restriction);
+                }
+            }
         }
         #endregion
 

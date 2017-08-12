@@ -89,7 +89,8 @@ namespace ItemLevel
         #region Config
         public class Contents
         {
-
+            public string testcooldown = "4h";
+            public string testcommandid = "2";
         }
         #endregion
 
