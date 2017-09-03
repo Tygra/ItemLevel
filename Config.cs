@@ -31,7 +31,7 @@ namespace ItemLevel
         #region Config create
         public static void CreateConfig()
         {
-            string filepath = Path.Combine(TShock.SavePath, "geldarv2.json");
+            string filepath = Path.Combine(TShock.SavePath, "test.json");
             try
             {
                 using (var stream = new FileStream(filepath, FileMode.Create, FileAccess.Write, FileShare.Write))
@@ -55,7 +55,7 @@ namespace ItemLevel
         #region Config Read
         public static bool ReadConfig()
         {
-            string filepath = Path.Combine(TShock.SavePath, "geldarv2.json");
+            string filepath = Path.Combine(TShock.SavePath, "test.json");
             try
             {
                 if (File.Exists(filepath))
@@ -73,7 +73,7 @@ namespace ItemLevel
                 }
                 else
                 {
-                    TShock.Log.ConsoleError("GeldarV2 config not found, how about a new one?");
+                    TShock.Log.ConsoleError("Test config not found, how about a new one?");
                     CreateConfig();
                     return true;
                 }
@@ -99,7 +99,7 @@ namespace ItemLevel
         {
             if (ReadConfig())
             {
-                args.Player.SendMessage("GeldarV2 config reloaded", Color.Goldenrod);
+                args.Player.SendMessage("Test config reloaded", Color.Goldenrod);
             }
             else
             {

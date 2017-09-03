@@ -35,7 +35,7 @@ namespace ItemLevel
         public override string Author { get { return "Tygra"; } }
         public override string Description { get { return "I'm so fucking over this"; } }
         public override Version Version { get { return new Version(0, 1); } }
-        public GeldarPlayer[] Playerlist = new GeldarPlayer[256];
+        public TestPlayer[] Playerlist = new TestPlayer[256];
 
         public ItemLevel(Main game)
             : base(game)
@@ -49,7 +49,7 @@ namespace ItemLevel
         {
             Commands.ChatCommands.Add(new Command(Test, "test"));
             Commands.ChatCommands.Add(new Command(Querytest, "qtest"));
-            Commands.ChatCommands.Add(new Command(Itemlevel, "il"));
+            Commands.ChatCommands.Add(new Command(Itemlevel, "il", "itemlevel"));
             if (!Config.ReadConfig())
             {
                 TShock.Log.ConsoleError("Config loading failed. Consider deleting it.");
@@ -110,7 +110,7 @@ namespace ItemLevel
         #region Playerlist Join/Leave
         public void OnJoin(JoinEventArgs args)
         {
-            Playerlist[args.Who] = new GeldarPlayer(args.Who);
+            Playerlist[args.Who] = new TestPlayer(args.Who);
         }
 
         public void OnLeave(LeaveEventArgs args)
@@ -226,19 +226,17 @@ namespace ItemLevel
         }
         #endregion
 
-        #region Itemlevel    
-        //működik. beilleszt. kiolvasás el sincs kezdve
+        #region Itemlevel
         public void Itemlevel(CommandArgs args)
         {
             if (args.Parameters.Count < 1)
             {
                 args.Player.SendInfoMessage("You can check the required levels for restricted items here.");
                 args.Player.SendInfoMessage("If the item name is two or more words, use doubleqoutes areound the name.");
-                args.Player.SendInfoMessage("Example: /itemlevel \"Solar Eruption\"");
+                args.Player.SendInfoMessage("Example: /itemlevel find \"Solar Eruption\"");
                 return;
             }
-            string Switch = args.Parameters[0].ToLower();
-            if (Switch == "add")
+            if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "add")
             {
                 if (args.Parameters.Count == 3)
                 {
@@ -246,6 +244,37 @@ namespace ItemLevel
                     string restriction = string.Join(" ", args.Parameters[2]);
                     additemlevel(itemname, restriction);
                 }
+                else
+                {
+                    args.Player.SendErrorMessage("Invalid syntax.");
+                    return;
+                }
+            }
+            if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "del")
+            {
+                if (args.Parameters.Count > 1)
+                {
+                    switch (args.Parameters[1].ToLower())
+                    {
+                        case "id":
+                            {
+
+                            }
+                            break;
+
+                        case "name":
+                            {
+
+                            }
+                            break;
+                    }
+                }
+                args.Player.SendErrorMessage("del info");
+                return;
+            }
+            if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "find")
+            {
+
             }
         }
         #endregion
@@ -254,6 +283,14 @@ namespace ItemLevel
         private void additemlevel(string itemname, string restriction)
         {
             database.Query("INSERT INTO itemlevel(Itemname, Restriction) VALUES(@0, @1);", itemname, restriction);
+        }
+        private void delitemlevelbyid(string id)
+        {
+            database.Query("DELETE FROM itemlevel WHERE ID=@0;", id);
+        }
+        private void delitemlevelbyname(string itemname)
+        {
+            database.Query("DELETE FROM itemlevel WHERE Itemname=@0;", itemname);
         }
         #endregion
 

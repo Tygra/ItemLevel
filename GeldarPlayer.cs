@@ -24,11 +24,11 @@ using MySql.Data.MySqlClient;
 
 namespace ItemLevel
 {
-    public class GeldarPlayer
+    public class TestPlayer
     {
         public int Index { get; set; }
         public TSPlayer TSPlayer { get { return TShock.Players[Index]; } }
-        public GeldarPlayer(int index)
+        public TestPlayer(int index)
         {
             this.Index = index;
         }
