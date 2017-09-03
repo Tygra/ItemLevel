@@ -50,6 +50,7 @@ namespace ItemLevel
             Commands.ChatCommands.Add(new Command(Test, "test"));
             Commands.ChatCommands.Add(new Command(Querytest, "qtest"));
             Commands.ChatCommands.Add(new Command(Itemlevel, "il", "itemlevel"));
+            ServerApi.Hooks.GameInitialize.Register(this, OnInitialize);
             if (!Config.ReadConfig())
             {
                 TShock.Log.ConsoleError("Config loading failed. Consider deleting it.");
@@ -61,7 +62,8 @@ namespace ItemLevel
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {                
+            {
+                ServerApi.Hooks.GameInitialize.Deregister(this, OnInitialize);
             }
             base.Dispose(disposing);
         }
