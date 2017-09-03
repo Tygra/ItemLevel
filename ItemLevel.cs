@@ -260,7 +260,19 @@ namespace ItemLevel
             }
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "find")
             {
-
+                string itemname = string.Join(" ", args.Parameters[1]);
+                QueryResult reader;
+                reader = database.QueryReader("SELECT * FROM itemlevel WHERE Itemname=@0;", itemname);
+                List<string> founditemlevels = new List<string>();
+                while (reader.Read())
+                {
+                    var rowid = reader.Get<int>("ID");
+                    var founditemname = reader.Get<string>("Itemname");
+                    var foundrestriction = reader.Get<string>("Restriction");                    
+                    args.Player.SendSuccessMessage("ID -  Item Name  -  Restriction");
+                    args.Player.SendInfoMessage(rowid + " - " + founditemname + " - " + foundrestriction);
+                }
+                reader.Dispose();                
             }
             if (args.Parameters.Count > 3)
             {
@@ -279,17 +291,16 @@ namespace ItemLevel
         {
             database.Query("DELETE FROM itemlevel WHERE ID=@0;", id);
         }
-        private void finditemlevel(string itemname)
+        public void finditemlevel(string itemname)
         {
-            try
+            QueryResult reader;
+            reader = database.QueryReader("SELECT * FROM itemlevel WHERE Itemname=@0;", itemname);
+            List<string> founditemlevels = new List<string>();
+            while (reader.Read())
             {
-                using (var reader = database.QueryReader("SELECT * FROM itemlevel WHERE Itemname=@0;", itemname))
-                {
-                    if (reader.Read())
-                    {
-                        return reader
-                    }
-                }
+                var rowid = reader.Get<int>("ID");
+                var founditemname = reader.Get<string>("Itemname");
+                var foundrestriction = reader.Get<string>("Restriction");
             }
         }
         #endregion
