@@ -93,7 +93,7 @@ namespace ItemLevel
                     break;
             }
 
-            SqlTableCreator sqlcreator = new SqlTableCreator(database, database.GetSqlType() == SqlType.Sqlite ? (IQueryBuilder)new SqliteQueryCreator() : new MysqlQueryCreator());            
+            SqlTableCreator sqlcreator = new SqlTableCreator(database, database.GetSqlType() == SqlType.Sqlite ? (IQueryBuilder)new SqliteQueryCreator() : new MysqlQueryCreator());
             sqlcreator.EnsureTableStructure(new SqlTable("itemlevel",
                 new SqlColumn("ID", MySqlDbType.Int32) { Primary = true, AutoIncrement = true },
                 new SqlColumn("Itemname", MySqlDbType.Text) { Length = 30 },
@@ -237,7 +237,7 @@ namespace ItemLevel
                 args.Player.SendInfoMessage("If the item name is two or more words, use doubleqoutes around the name.");
                 args.Player.SendInfoMessage("Example: /itemlevel find \"Solar Eruption\"");
                 return;
-            }            
+            }
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "add")
             {
                 if (args.Parameters.Count == 3)
@@ -258,13 +258,10 @@ namespace ItemLevel
                     args.Player.SendSuccessMessage("Row with the ID {0} was deleted.", id);
                 }
             }
-            /*
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "find")
             {
 
             }
-            */
-            //mindenképpen lefut
             if (args.Parameters.Count > 3)
             {
                 args.Player.SendErrorMessage("Invalid syntax.");
@@ -281,6 +278,19 @@ namespace ItemLevel
         private void delitemlevelbyid(int id)
         {
             database.Query("DELETE FROM itemlevel WHERE ID=@0;", id);
+        }
+        private void finditemlevel(string itemname)
+        {
+            try
+            {
+                using (var reader = database.QueryReader("SELECT * FROM itemlevel WHERE Itemname=@0;", itemname))
+                {
+                    if (reader.Read())
+                    {
+                        return reader
+                    }
+                }
+            }
         }
         #endregion
 
