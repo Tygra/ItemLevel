@@ -18,3 +18,5 @@ C:\Users\tygra\Desktop\Plugins\Itemlevel\obj\Debug\ItemLevel.csproj.CoreCompileI
 C:\Users\tygra\Desktop\Plugins\Itemlevel\obj\Debug\ItemLevel.dll
 C:\Users\tygra\Desktop\Plugins\Itemlevel\obj\Debug\ItemLevel.pdb
 C:\Users\tygra\Desktop\Plugins\Itemlevel\obj\Debug\ItemLevel.csprojResolveAssemblyReference.cache
+C:\Users\tygra\Desktop\Plugins\Itemlevel\bin\Debug\HttpServer.dll
+C:\Users\tygra\Desktop\Plugins\Itemlevel\bin\Debug\BCrypt.Net.dll

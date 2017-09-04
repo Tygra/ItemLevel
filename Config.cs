@@ -91,6 +91,7 @@ namespace ItemLevel
         {
             public string testcooldown = "4h";
             public string testcommandid = "2";
+            public int itemsperpage = 50;
         }
         #endregion
 

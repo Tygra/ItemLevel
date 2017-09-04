@@ -358,7 +358,28 @@ namespace ItemLevel
             #region Itemlevel list
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "list")
             {
-
+                int pageNumber;
+                if (!PaginationTools.TryParsePageNumber(args.Parameters, 1, args.Player, out pageNumber))
+                {
+                    return;
+                }
+                List<string> itemlist = new List<string>();
+                using (var reader = database.QueryReader("SELECT ID, Itemname, Restriction FROM itemlevel;"))
+                {
+                    while (reader.Read())
+                    {
+                        itemlist.Add(reader.Get<string>("Itemname"));
+                        itemlist.Add(reader.Get<string>("Restriction"));
+                    }
+                }
+                PaginationTools.SendPage(args.Player, pageNumber, itemlist,
+                new PaginationTools.Settings
+                {
+                    HeaderFormat = "Itemname - Restriction ({0}/{1})",
+                    FooterFormat = "Type {0}il list {{0}} for more." .SFormat(Commands.Specifier),
+                    NothingToDisplayString = "No items in the table."
+                });
+                    
             }
             #endregion
 
