@@ -323,7 +323,11 @@ namespace ItemLevel
                         #region Itemname update
                         case "itemname":
                             {
-
+                                string olditemname = string.Join(" ", args.Parameters[3]);
+                                string newitemname = string.Join(" ", args.Parameters[4]);
+                                updateitemname(olditemname, newitemname);
+                                args.Player.SendSuccessMessage("Old Itemname: {0} has been updated to {1}.", olditemname, newitemname);
+                                
                             }
                             break;
                         #endregion
@@ -335,12 +339,27 @@ namespace ItemLevel
                             }
                             break;
                         #endregion
+
+                        #region Default fallback
+                        default:
+                            {
+                                args.Player.SendErrorMessage("Wrong subcommand.");
+                            }
+                            break;
+                            #endregion
                     }
                 }
             }
             #endregion
 
-            if (args.Parameters.Count > 3)
+            #region Itemlevel list
+            if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "list")
+            {
+
+            }
+            #endregion
+
+            if (args.Parameters.Count > 4)
             {
                 args.Player.SendErrorMessage("Invalid syntax.");
                 return;
@@ -368,6 +387,10 @@ namespace ItemLevel
                 var founditemname = reader.Get<string>("Itemname");
                 var foundrestriction = reader.Get<string>("Restriction");
             }
+        }
+        public void updateitemname(string newitemname, string olditemname)
+        {
+            database.Query("UPDATE itemlevel SET Itemname=@0 WHERE Itemname=@1;", newitemname, olditemname);
         }
         #endregion
 
