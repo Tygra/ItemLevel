@@ -238,6 +238,8 @@ namespace ItemLevel
                 args.Player.SendInfoMessage("Example: /itemlevel find \"Solar Eruption\"");
                 return;
             }
+
+            #region Add
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "add")
             {
                 if (args.Parameters.Count == 3)
@@ -247,7 +249,15 @@ namespace ItemLevel
                     additemlevel(itemname, restriction);
                     args.Player.SendSuccessMessage("Item: {0}, Description: {1}, was added.", itemname, restriction);
                 }
+                else
+                {
+                    args.Player.SendInfoMessage("Invalid syntax. Use \"/il add \"item name\"");
+                    return;
+                }
             }
+            #endregion
+
+            #region Del
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "del")
             {
                 if (args.Parameters.Count == 2)
@@ -257,7 +267,16 @@ namespace ItemLevel
                     delitemlevelbyid(id);
                     args.Player.SendSuccessMessage("Row with the ID {0} was deleted.", id);
                 }
+                else
+                {
+                    args.Player.SendErrorMessage("Invalid syntax. Use \"/il del ID");
+                    args.Player.SendErrorMessage("You can get the ID from \"il find \"item name\"\"");
+                    return;
+                }
             }
+            #endregion
+
+            #region Find
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "find")
             {
                 if (args.Parameters.Count == 2)
@@ -277,11 +296,12 @@ namespace ItemLevel
                 }
                 else
                 {
-                    args.Player.SendInfoMessage("Invalid syntax. Use \"/il find \"item name\"");
+                    args.Player.SendErrorMessage("Invalid syntax. Use \"/il find \"item name\"");
                     return;
                 }
-
             }
+            #endregion
+
             if (args.Parameters.Count > 3)
             {
                 args.Player.SendErrorMessage("Invalid syntax.");
