@@ -277,7 +277,7 @@ namespace ItemLevel
                 }
                 else
                 {
-                    args.Player.SendInfoMessage("yolo");
+                    args.Player.SendInfoMessage("Invalid syntax. Use \"/il find \"item name\"");
                     return;
                 }
 
