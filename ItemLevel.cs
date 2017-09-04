@@ -260,19 +260,27 @@ namespace ItemLevel
             }
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "find")
             {
-                string itemname = string.Join(" ", args.Parameters[1]);
-                QueryResult reader;
-                reader = database.QueryReader("SELECT * FROM itemlevel WHERE Itemname=@0;", itemname);
-                List<string> founditemlevels = new List<string>();
-                while (reader.Read())
+                if (args.Parameters.Count == 2)
                 {
-                    var rowid = reader.Get<int>("ID");
-                    var founditemname = reader.Get<string>("Itemname");
-                    var foundrestriction = reader.Get<string>("Restriction");                    
-                    args.Player.SendSuccessMessage("ID -  Item Name  -  Restriction");
-                    args.Player.SendInfoMessage(rowid + " - " + founditemname + " - " + foundrestriction);
+                    string itemname = string.Join(" ", args.Parameters[1]);
+                    QueryResult reader;
+                    reader = database.QueryReader("SELECT * FROM itemlevel WHERE Itemname=@0;", itemname);
+                    while (reader.Read())
+                    {
+                        var rowid = reader.Get<int>("ID");
+                        var founditemname = reader.Get<string>("Itemname");
+                        var foundrestriction = reader.Get<string>("Restriction");
+                        args.Player.SendSuccessMessage("ID -  Item Name  -  Restriction");
+                        args.Player.SendInfoMessage(rowid + " - " + founditemname + " - " + foundrestriction);
+                    }
+                    reader.Dispose();
                 }
-                reader.Dispose();                
+                else
+                {
+                    args.Player.SendInfoMessage("yolo");
+                    return;
+                }
+
             }
             if (args.Parameters.Count > 3)
             {
