@@ -257,6 +257,35 @@ namespace ItemLevel
             }
             #endregion
 
+            #region Duplicate
+            if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "dup")
+            {
+                if (args.Parameters.Count == 3)
+                {
+                    string itemname = string.Join(" ", args.Parameters[1]);
+                    string restriction = string.Join(" ", args.Parameters[2]);
+                    List<string> duplicate = new List<string>();
+                    using (var reader = database.QueryReader("SELECT * FROM itemlevel WHERE Itemname=@0;", itemname))
+                    {
+                        while (reader.Read())
+                        {
+                            duplicate.Add(reader.Get<string>("Itemname"));
+                        }
+                    }
+                    if (duplicate.Count < 1)
+                    {
+                        additemlevel(itemname, restriction);
+                        args.Player.SendSuccessMessage("success");
+                    }
+                    else
+                    {
+                        args.Player.SendErrorMessage("multiplematcherror");
+                        return;
+                    }
+                }
+            }
+            #endregion
+
             #region Del
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "del")
             {
