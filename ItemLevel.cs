@@ -323,8 +323,8 @@ namespace ItemLevel
                         #region Itemname update
                         case "itemname":
                             {
-                                string olditemname = string.Join(" ", args.Parameters[3]);
-                                string newitemname = string.Join(" ", args.Parameters[4]);
+                                string olditemname = string.Join(" ", args.Parameters[2]);
+                                string newitemname = string.Join(" ", args.Parameters[3]);
                                 updateitemname(olditemname, newitemname);
                                 args.Player.SendSuccessMessage("Old Itemname: {0} has been updated to {1}.", olditemname, newitemname);
                                 
@@ -335,7 +335,10 @@ namespace ItemLevel
                         #region Restriction udpate
                         case "restriction":
                             {
-
+                                string itemname = string.Join(" ", args.Parameters[2]);
+                                string newrestriction = string.Join(" ", args.Parameters[3]);
+                                updaterestriction(newrestriction, itemname);
+                                args.Player.SendSuccessMessage("Old restriction for item {0}, has been updated to: {1}.", itemname, newrestriction);
                             }
                             break;
                         #endregion
@@ -388,9 +391,13 @@ namespace ItemLevel
                 var foundrestriction = reader.Get<string>("Restriction");
             }
         }
-        public void updateitemname(string newitemname, string olditemname)
+        public void updateitemname(string olditemname, string newitemname)
         {
             database.Query("UPDATE itemlevel SET Itemname=@0 WHERE Itemname=@1;", newitemname, olditemname);
+        }
+        public void updaterestriction(string newrestriction, string itemname)
+        {
+            database.Query("UPDATE itemlevel SET Restriction=@0 WHERE Itemname=@1;", newrestriction, itemname);
         }
         #endregion
 
