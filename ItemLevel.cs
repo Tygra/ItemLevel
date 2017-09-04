@@ -237,28 +237,10 @@ namespace ItemLevel
                 args.Player.SendInfoMessage("If the item name is two or more words, use doubleqoutes around the name.");
                 args.Player.SendInfoMessage("Example: /itemlevel find \"Solar Eruption\"");
                 return;
-            }
+            }          
 
             #region Add
             if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "add")
-            {
-                if (args.Parameters.Count == 3)
-                {
-                    string itemname = string.Join(" ", args.Parameters[1]);
-                    string restriction = string.Join(" ", args.Parameters[2]);
-                    additemlevel(itemname, restriction);
-                    args.Player.SendSuccessMessage("Item: {0}, Description: {1}, was added.", itemname, restriction);
-                }
-                else
-                {
-                    args.Player.SendInfoMessage("Invalid syntax. Use \"/il add \"item name\"");
-                    return;
-                }
-            }
-            #endregion
-
-            #region Duplicate
-            if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "dup")
             {
                 if (args.Parameters.Count == 3)
                 {
@@ -275,11 +257,11 @@ namespace ItemLevel
                     if (duplicate.Count < 1)
                     {
                         additemlevel(itemname, restriction);
-                        args.Player.SendSuccessMessage("success");
+                        args.Player.SendSuccessMessage("Item: \"{0}\" with the Description: \"{1}\" was added.", itemname, restriction);
                     }
                     else
                     {
-                        args.Player.SendErrorMessage("multiplematcherror");
+                        args.Player.SendErrorMessage("There is already an item named {0}, in the database.", itemname);
                         return;
                     }
                 }
@@ -327,6 +309,33 @@ namespace ItemLevel
                 {
                     args.Player.SendErrorMessage("Invalid syntax. Use \"/il find \"item name\"");
                     return;
+                }
+            }
+            #endregion
+
+            #region Update row
+            if (args.Parameters.Count > 0 && args.Parameters[0].ToLower() == "update")
+            {
+                if (args.Parameters.Count > 1)
+                {
+                    switch (args.Parameters[1].ToLower())
+                    {
+                        #region Itemname update
+                        case "itemname":
+                            {
+
+                            }
+                            break;
+                        #endregion
+
+                        #region Restriction udpate
+                        case "restriction":
+                            {
+
+                            }
+                            break;
+                        #endregion
+                    }
                 }
             }
             #endregion
