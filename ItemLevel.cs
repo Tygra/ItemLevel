@@ -265,6 +265,11 @@ namespace ItemLevel
                         return;
                     }
                 }
+                else
+                {
+                    args.Player.SendErrorMessage("Invalid syntax. Use /il add \"item name\" \"restriction\"");
+                    return;
+                }
             }
             #endregion
 
@@ -323,10 +328,18 @@ namespace ItemLevel
                         #region Itemname update
                         case "itemname":
                             {
-                                string olditemname = string.Join(" ", args.Parameters[2]);
-                                string newitemname = string.Join(" ", args.Parameters[3]);
-                                updateitemname(olditemname, newitemname);
-                                args.Player.SendSuccessMessage("Old Itemname: {0} has been updated to {1}.", olditemname, newitemname);
+                                if (args.Parameters.Count == 4)
+                                {
+                                    string olditemname = string.Join(" ", args.Parameters[2]);
+                                    string newitemname = string.Join(" ", args.Parameters[3]);
+                                    updateitemname(olditemname, newitemname);
+                                    args.Player.SendSuccessMessage("Old Itemname: {0} has been updated to {1}.", olditemname, newitemname);
+                                }
+                                else
+                                {
+                                    args.Player.SendErrorMessage("Invalid syntax. Use /il update itemname \"old item name\" \"new item name\"");
+                                    return;
+                                }
                                 
                             }
                             break;
@@ -335,10 +348,18 @@ namespace ItemLevel
                         #region Restriction udpate
                         case "restriction":
                             {
-                                string itemname = string.Join(" ", args.Parameters[2]);
-                                string newrestriction = string.Join(" ", args.Parameters[3]);
-                                updaterestriction(newrestriction, itemname);
-                                args.Player.SendSuccessMessage("Old restriction for item {0}, has been updated to: {1}.", itemname, newrestriction);
+                                if (args.Parameters.Count == 4)
+                                {
+                                    string itemname = string.Join(" ", args.Parameters[2]);
+                                    string newrestriction = string.Join(" ", args.Parameters[3]);
+                                    updaterestriction(newrestriction, itemname);
+                                    args.Player.SendSuccessMessage("Old restriction for item {0}, has been updated to: {1}.", itemname, newrestriction);
+                                }
+                                else
+                                {
+                                    args.Player.SendErrorMessage("Invalid syntax. Use /il update restriction \"item name\" \"new restriction\"");
+                                    return;
+                                }
                             }
                             break;
                         #endregion
