@@ -389,11 +389,10 @@ namespace ItemLevel
                 {
                     while (reader.Read())
                     {
-                        itemlist.Add(reader.Get<string>("Itemname"));
-                        itemlist.Add(reader.Get<string>("Restriction"));
+                        itemlist.Add(String.Format("{0}" + " - " + "{1}", reader.Get<string>("Itemname"), reader.Get<string>("Restriction")));
                     }
                 }
-                PaginationTools.SendPage(args.Player, pageNumber, itemlist,
+                PaginationTools.SendPage(args.Player, pageNumber,itemlist,
                 new PaginationTools.Settings
                 {
                     HeaderFormat = "Itemname - Restriction ({0}/{1})",
